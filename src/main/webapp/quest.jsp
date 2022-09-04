@@ -25,7 +25,7 @@
     <p>Статистика:</p>
     <p>IP address: <%= session.getAttribute("adress")%></p>
     <p>Имя в игре: <%= session.getAttribute("name")%></p>
-    <p>Количество игр: </p>
+    <p>Количество игр: <%= session.getAttribute("numberGames")%></p>
 </form>
 </body>
 </html>

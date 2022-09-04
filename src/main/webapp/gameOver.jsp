@@ -18,6 +18,6 @@
     } else gameOver = currentPage.getGameOver();
 %>
 <h2><%= gameOver%></h2>
-<input type="button" value="Начать сначала" onclick="window.location='/prolog.jsp'">
+<input type="button" value="Начать сначала" onclick="window.location = '/restart'">
 </body>
 </html>

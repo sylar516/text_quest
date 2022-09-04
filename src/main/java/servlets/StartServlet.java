@@ -2,7 +2,6 @@ package servlets;
 
 import entities.QuestPage;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +9,28 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 @WebServlet(name = "StartServlet", value = "/start")
 public class StartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+
+        if (!session.getAttributeNames().hasMoreElements()) {
+            initQuest(req);
+        }
+
+        String name = req.getParameter("name");
+        session.setAttribute("name", name);
+
+        session.setAttribute("pageNumber", 1);
+
+        resp.sendRedirect("/quest.jsp");
+    }
+
+    private void initQuest(HttpServletRequest req) throws UnknownHostException {
         HttpSession session = req.getSession();
 
         Map<Integer, QuestPage> pages = Map.ofEntries(
@@ -25,15 +40,10 @@ public class StartServlet extends HttpServlet {
         );
         session.setAttribute("pages", pages);
 
-        String name = req.getParameter("name");
-        session.setAttribute("name", name);
-
-        session.setAttribute("pageNumber", 1);
-
         InetAddress localHost = InetAddress.getLocalHost();
         String hostAddress = localHost.getHostAddress();
         session.setAttribute("adress", hostAddress);
 
-        resp.sendRedirect("/quest.jsp");
+        session.setAttribute("numberGames", 0);
     }
 }
