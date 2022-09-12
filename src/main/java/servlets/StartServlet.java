@@ -2,6 +2,7 @@ package servlets;
 
 import entities.QuestPage;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +16,11 @@ import java.util.Map;
 @WebServlet(name = "StartServlet", value = "/start")
 public class StartServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession();
 
         if (!session.getAttributeNames().hasMoreElements()) {
-            initQuest(req);
+            initSession(session);
         }
 
         String name = req.getParameter("name");
@@ -30,9 +31,7 @@ public class StartServlet extends HttpServlet {
         resp.sendRedirect("/quest.jsp");
     }
 
-    private void initQuest(HttpServletRequest req) throws UnknownHostException {
-        HttpSession session = req.getSession();
-
+    protected void initSession(HttpSession session) throws UnknownHostException {
         Map<Integer, QuestPage> pages = Map.ofEntries(
                 Map.entry(1, new QuestPage("Ты потерял память. Принять вызов НЛО?", "Принять вызов", "Отклонить вызов", "Ты отклонил вызов. Поражение")),
                 Map.entry(2, new QuestPage("Ты принял вызов. Подняться на мостик к капитану?", "Подняться на мостик", "Отказаться подниматься на мостик", "Ты не пошёл на переговоры. Поражение")),

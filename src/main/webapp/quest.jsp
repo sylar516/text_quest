@@ -7,17 +7,18 @@
     <title>Квест</title>
 </head>
 <body>
-<%  Map<Integer, QuestPage> pages = (Map<Integer, QuestPage>) session.getAttribute("pages");
+<%
+    Map<Integer, QuestPage> pages = (Map<Integer, QuestPage>) session.getAttribute("pages");
     int currentPageNumber = (int) session.getAttribute("pageNumber");
     QuestPage currentPage = pages.get(currentPageNumber);
 %>
 <h2><%= currentPage.getQuestion() %></h2>
 <form>
     <label>
-        <input type="radio" name="variant" value="yes">
+        <input type="radio" name="variant" value="yes" required>
     </label><%= currentPage.getPositiveAnswer() %><br>
     <label>
-        <input type="radio" name="variant" value="no">
+        <input type="radio" name="variant" value="no" required>
     </label><%= currentPage.getNegativeAnswer() %><br>
     <input type="submit" value="Ответить" formaction="/logic">
 </form>

@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public class QuestPage {
     private String question;
     private String positiveAnswer;
@@ -26,5 +28,18 @@ public class QuestPage {
     }
     public String getGameOver() {
         return gameOver;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestPage page = (QuestPage) o;
+        return Objects.equals(question, page.question) && Objects.equals(positiveAnswer, page.positiveAnswer) && Objects.equals(negativeAnswer, page.negativeAnswer) && Objects.equals(gameOver, page.gameOver);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(question, positiveAnswer, negativeAnswer, gameOver);
     }
 }
