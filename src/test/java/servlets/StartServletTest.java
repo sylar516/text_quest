@@ -7,55 +7,20 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
+
+import static servlets.Initializer.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StartServletTest {
-    private static StartServlet servlet;
-    private static HttpServletRequest request;
-    private static HttpSession session;
-    private static Map<String, Object> sessionParams;
-    private static Enumeration<String> enumeration;
-    private static HttpServletResponse response;
-    private static String redirectURL;
-
+    private static StartServlet servlet = Mockito.spy(StartServlet.class);
     @BeforeAll
     static void init() throws IOException {
-        servlet = Mockito.spy(new StartServlet());
-        request = Mockito.mock(HttpServletRequest.class);
-        session = Mockito.mock(HttpSession.class);
-        sessionParams = new HashMap<>();
-        enumeration = Mockito.mock(Enumeration.class);
-        response = Mockito.mock(HttpServletResponse.class);
-
-        Mockito.doReturn(session).when(request).getSession();
-
-        Mockito.doAnswer(invocationOnMock -> {
-            String key = invocationOnMock.getArgument(0);
-            Object value = invocationOnMock.getArgument(1);
-            sessionParams.put(key, value);
-            return null;
-        }).when(session).setAttribute(Mockito.anyString(), Mockito.any());
-
-        Mockito.doAnswer(invocationOnMock -> {
-            String key = invocationOnMock.getArgument(0);
-            return sessionParams.get(key);
-        }).when(session).getAttribute(Mockito.anyString());
-
+        initTestParams();
         Mockito.doReturn(enumeration).when(session).getAttributeNames();
-
-        Mockito.doAnswer(invocationOnMock -> {
-            redirectURL = invocationOnMock.getArgument(0);
-            return redirectURL;
-        }).when(response).sendRedirect(Mockito.anyString());
     }
 
     @DisplayName("Тест метода doGet класса StartServlet")
@@ -67,11 +32,10 @@ public class StartServletTest {
         Mockito.doReturn(expectedName).when(request).getParameter("name");
 
         Mockito.doReturn(hasMoreElements).when(enumeration).hasMoreElements();
+
         servlet.doGet(request, response);
         //Проверяем, вызывается ли внутри метод initSession при пустой сессии
-        if (!hasMoreElements) {
-            Mockito.verify(servlet).initSession(session);
-        }
+        Mockito.verify(servlet, Mockito.times(1)).initSession(session);
 
         String actualName = (String) session.getAttribute("name");
         Assertions.assertEquals(expectedName, actualName);
@@ -95,7 +59,7 @@ public class StartServletTest {
         );
         Map<Integer, QuestPage> actualPages = (Map<Integer, QuestPage>) session.getAttribute("pages");
         Assertions.assertEquals(expectedPages.size(), actualPages.size());
-        for(Integer key : expectedPages.keySet()) {
+        for (Integer key : expectedPages.keySet()) {
             Assertions.assertEquals(expectedPages.get(key), actualPages.get(key));
         }
 
