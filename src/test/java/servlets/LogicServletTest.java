@@ -44,8 +44,7 @@ class LogicServletTest {
 
         Mockito.doAnswer(invocationOnMock -> {
             String key = invocationOnMock.getArgument(0);
-            Object value = sessionParams.get(key);
-            return value;
+            return sessionParams.get(key);
         }).when(session).getAttribute(Mockito.anyString());
 
         Mockito.doAnswer(invocationOnMock -> {

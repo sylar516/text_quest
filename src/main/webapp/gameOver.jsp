@@ -1,23 +1,20 @@
-<%@ page import="entities.QuestPage" %>
-<%@ page import="java.util.Map" %>
 <html>
 <head>
     <%@ page contentType="text/html;charset=UTF-8" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title>Конец игры</title>
 </head>
 <body>
-<%
-    String variant = request.getParameter("variant");
-    int currentPageNumber = (int) session.getAttribute("pageNumber");
-    Map<Integer, QuestPage> pages = (Map<Integer, QuestPage>) session.getAttribute("pages");
-    QuestPage currentPage = pages.get(currentPageNumber);
+<c:set var="variant" scope="page" value="<%= request.getParameter(\"variant\") %>"/>
+<c:set var="currentPage" scope="page" value="${pages.get(pageNumber)}"/>
 
-    String gameOver;
-    if (variant.equals("yes")) {
-        gameOver = "Тебя вернули домой. Победа";
-    } else gameOver = currentPage.getGameOver();
-%>
-<h2><%= gameOver%></h2>
+<c:if test="${variant.equals(\"yes\")}">
+    <c:set var="gameOver" scope="page" value="Тебя вернули домой. Победа"/>
+</c:if>
+<c:if test="${variant.equals(\"no\")}">
+    <c:set var="gameOver" scope="page" value="${currentPage.getGameOver()}"/>
+</c:if>
+<h2>${gameOver}</h2>
 <input type="button" value="Начать сначала" onclick="window.location = '/restart'">
 </body>
 </html>
