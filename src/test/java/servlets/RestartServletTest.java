@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static servlets.Initializer.*;
+import static servlets.FieldsInitializer.*;
 
 class RestartServletTest {
     private static RestartServlet servlet = new RestartServlet();

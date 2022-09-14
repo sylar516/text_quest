@@ -2,6 +2,7 @@ package entities;
 
 import java.util.Objects;
 
+//Класс - реализация страницы квеста
 public class QuestPage {
     private String question;
     private String positiveAnswer;

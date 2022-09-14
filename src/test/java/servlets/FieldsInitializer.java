@@ -11,8 +11,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-//класс, созданный для оптимизации повторяющегося кода в тестах при инициализации глобальных переменных
-public class Initializer {
+//класс-инициализатор, содержащий в себе общие и необходимые для всех тестов поля и поведение для полей-заглушек
+public class FieldsInitializer {
     static HttpServletRequest request;
      static HttpSession session;
      static Map<String, Object> sessionParams;

@@ -12,7 +12,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
 
-import static servlets.Initializer.*;
+import static servlets.FieldsInitializer.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StartServletTest {
@@ -34,7 +34,7 @@ public class StartServletTest {
         Mockito.doReturn(hasMoreElements).when(enumeration).hasMoreElements();
 
         servlet.doGet(request, response);
-        //Проверяем, вызывается ли внутри метод initSession при пустой сессии
+        //Проверяем, вызывается ли внутри метод initSession при пустой сессии (только один раз)
         Mockito.verify(servlet, Mockito.times(1)).initSession(session);
 
         String actualName = (String) session.getAttribute("name");

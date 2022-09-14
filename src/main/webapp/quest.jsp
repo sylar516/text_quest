@@ -1,5 +1,3 @@
-<%@ page import="entities.QuestPage" %>
-<%@ page import="java.util.Map" %>
 <html>
 <head>
     <link href="static/main.css" rel="stylesheet">

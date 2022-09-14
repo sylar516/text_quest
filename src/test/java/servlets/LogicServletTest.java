@@ -8,11 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Map;
 
-import static servlets.Initializer.*;
+import static servlets.FieldsInitializer.*;
 
 class LogicServletTest {
     private static LogicServlet servlet = new LogicServlet();
@@ -30,7 +29,7 @@ class LogicServletTest {
     @ParameterizedTest
     @DisplayName("Тест метода doGet класса LogicServlet с положительным вариантом ответа")
     @ValueSource(ints = {1, 2, 3})
-    void doGetPositiveAnswerTest(int pageNumber) throws IOException, InterruptedException, ServletException {
+    void doGetPositiveAnswerTest(int pageNumber) throws IOException {
         String variant = "yes";
         Mockito.doReturn(variant).when(request).getParameter("variant");
 
@@ -41,7 +40,7 @@ class LogicServletTest {
         int currentPageNumber = (int) session.getAttribute("pageNumber");
 
         if (pageNumber == pages.size()) {
-            Assertions.assertEquals("/gameOver.jsp?variant=" + variant, redirectURL);
+            Assertions.assertEquals("/game_over.jsp?variant=" + variant, redirectURL);
         } else {
             Assertions.assertEquals(pageNumber + 1, currentPageNumber);
             Assertions.assertEquals("/quest.jsp", redirectURL);
@@ -49,9 +48,9 @@ class LogicServletTest {
     }
 
     @ParameterizedTest
-    @DisplayName("Тест метода doGet класса LogicServlet с негативным вариантом ответа")
+    @DisplayName("Тест метода doGet класса LogicServlet с отрицательным вариантом ответа")
     @ValueSource(ints = {1, 2, 3})
-    void doGetNegativeAnswerTest(int pageNumber) throws IOException, InterruptedException, ServletException {
+    void doGetNegativeAnswerTest(int pageNumber) throws IOException {
         String variant = "no";
         Mockito.doReturn(variant).when(request).getParameter("variant");
 
@@ -62,6 +61,6 @@ class LogicServletTest {
         int currentPageNumber = (int) session.getAttribute("pageNumber");
 
         Assertions.assertEquals(pageNumber, currentPageNumber);
-        Assertions.assertEquals("/gameOver.jsp?variant=" + variant, redirectURL);
+        Assertions.assertEquals("/game_over.jsp?variant=" + variant, redirectURL);
     }
 }
